@@ -1,0 +1,11 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Erro de conflito",
+  "description": "Resposta 409 de POST /auth/register quando o e-mail já está cadastrado.",
+  "type": "object",
+  "required": ["erro"],
+  "additionalProperties": false,
+  "properties": {
+    "erro": { "type": "string", "minLength": 1 }
+  }
+}

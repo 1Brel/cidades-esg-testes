@@ -1,0 +1,14 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Usuário cadastrado",
+  "description": "Resposta de POST /auth/register. A senha nunca pode ser devolvida.",
+  "type": "object",
+  "required": ["usuarioId", "nome", "email", "role"],
+  "additionalProperties": false,
+  "properties": {
+    "usuarioId": { "type": "integer", "minimum": 1 },
+    "nome":      { "type": "string", "minLength": 1 },
+    "email":     { "type": "string", "pattern": "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$" },
+    "role":      { "type": "string", "enum": ["ADMIN", "USER"] }
+  }
+}

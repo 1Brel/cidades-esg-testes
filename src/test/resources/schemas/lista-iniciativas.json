@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Lista de iniciativas de redução de carbono",
+  "description": "Resposta de GET /api/reducao-carbono: uma lista em que cada item segue o contrato da iniciativa.",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["reducaoCarbonoId", "descricao", "categoria", "status", "emissaoBaseTco2E", "metaReducaoTco2E"],
+    "additionalProperties": false,
+    "properties": {
+      "reducaoCarbonoId": { "type": "integer", "minimum": 1 },
+      "descricao":        { "type": "string", "minLength": 1 },
+      "categoria":        { "type": "string", "minLength": 1 },
+      "status":           { "type": "string", "minLength": 1 },
+      "emissaoBaseTco2E": { "type": "number", "minimum": 0 },
+      "metaReducaoTco2E": { "type": "number", "minimum": 0 }
+    }
+  }
+}

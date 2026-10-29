@@ -1,8 +1,6 @@
 # language: pt
 
-# Pilar ESG: Governança.
-# Garante que somente usuários identificados acessem e alterem os dados
-# ambientais da plataforma, base para a rastreabilidade das informações.
+# Garante que somente usuários identificados acessem e alterem os dados ambientais da plataforma, base para a rastreabilidade das informações.
 
 @regressivo @autenticacao
 Funcionalidade: Cadastro e autenticação de usuários
@@ -47,8 +45,7 @@ Funcionalidade: Cadastro e autenticação de usuários
     Então o status code da resposta deve ser 400
     E o campo "email" do corpo da resposta deve ser "O e-mail do usuário não é válido!"
 
-  # Achado dos testes: a API responde 403 (e não 401) para credenciais inválidas,
-  # porque o Spring Security bloqueia a página de erro padrão (/error).
+  # Achado dos testes: a API responde 403 (e não 401) para credenciais inválidas, porque o Spring Security bloqueia a página de erro padrão (/error).
   @achado
   Cenário: Login com senha incorreta é recusado
     Dado que exista um usuário cadastrado com perfil "ADMIN"

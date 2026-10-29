@@ -1,8 +1,6 @@
 # language: pt
 
-# Pilar ESG: Governança (transparência).
-# Garante que as iniciativas registradas possam ser consultadas de forma
-# íntegra por qualquer usuário autenticado, e nunca sem autenticação.
+# Garante que as iniciativas registradas possam ser consultadas de forma íntegra por qualquer usuário autenticado, e nunca sem autenticação.
 
 @regressivo @iniciativas
 Funcionalidade: Consulta de iniciativas de redução de carbono

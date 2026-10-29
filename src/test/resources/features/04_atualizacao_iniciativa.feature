@@ -1,8 +1,6 @@
 # language: pt
 
-# Pilares ESG: Ambiental e Governança.
-# Garante que a evolução das iniciativas (status e metas) seja registrada
-# corretamente e apenas por usuários autorizados.
+# Garante que a evolução das iniciativas (status e metas) seja registrada corretamente e apenas por usuários autorizados.
 
 @regressivo @iniciativas
 Funcionalidade: Atualização de iniciativas de redução de carbono
@@ -29,7 +27,7 @@ Funcionalidade: Atualização de iniciativas de redução de carbono
     Quando eu tentar atualizar a iniciativa excluída
     Então o status code da resposta deve ser 404
 
-  # Governança: só um administrador autenticado pode alterar dados ambientais.
+  # Só um administrador autenticado pode alterar dados ambientais.
   Esquema do Cenário: Atualização de iniciativa recusada com a credencial "<credencial>"
     Dado que eu acesse a API com a credencial "<credencial>"
     Quando eu atualizar a iniciativa cadastrada com os seguintes dados:

@@ -1,6 +1,5 @@
 # language: pt
 
-# Pilar ESG: Governança (integridade e rastreabilidade).
 # Garante que a remoção de dados ambientais seja controlada e efetiva.
 
 @regressivo @iniciativas
@@ -18,16 +17,14 @@ Funcionalidade: Exclusão de iniciativas de redução de carbono
     Então o status code da resposta deve ser 204
     E a iniciativa excluída não deve mais ser encontrada
 
-  # Achado dos testes: a API responde 403 (e não 404) ao excluir uma iniciativa
-  # inexistente, porque a exceção não é tratada e o Spring Security bloqueia a
-  # página de erro padrão (/error).
+  # Achado dos testes: a API responde 403 (e não 404) ao excluir uma iniciativa inexistente, porque a exceção não é tratada e o Spring Security bloqueia a página de erro padrão (/error).
   @achado
   Cenário: Exclusão de uma iniciativa que já foi excluída
     Dado que exista uma iniciativa que já foi excluída
     Quando eu excluir novamente a iniciativa excluída
     Então o status code da resposta deve ser 403
 
-  # Governança: só um administrador autenticado pode remover dados ambientais.
+  # Só um administrador autenticado pode remover dados ambientais.
   Esquema do Cenário: Exclusão de iniciativa recusada com a credencial "<credencial>"
     Dado que eu acesse a API com a credencial "<credencial>"
     Quando eu excluir a iniciativa cadastrada

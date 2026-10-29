@@ -1,8 +1,6 @@
 # language: pt
 
-# Pilares ESG: Ambiental e Governança.
-# Garante que as iniciativas de redução de carbono só sejam registradas
-# com dados completos e válidos, e somente por usuários autorizados.
+# Garante que as iniciativas de redução de carbono só sejam registrada com dados completos e válidos, e somente por usuários autorizados.
 
 @regressivo @iniciativas
 Funcionalidade: Cadastro de iniciativas de redução de carbono
@@ -42,7 +40,7 @@ Funcionalidade: Cadastro de iniciativas de redução de carbono
       | emissaoBaseTco2E | -10   | must be greater than or equal to 0 |
       | metaReducaoTco2E | -5    | must be greater than or equal to 0 |
 
-  # Governança: só um administrador autenticado pode registrar dados ambientais.
+  # Só um administrador autenticado pode registrar dados ambientais.
   Esquema do Cenário: Cadastro de iniciativa recusado com a credencial "<credencial>"
     Dado que eu acesse a API com a credencial "<credencial>"
     E que eu tenha os dados de uma iniciativa válida

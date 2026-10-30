@@ -1,0 +1,79 @@
+# =====================================================================
+# Ambiente de testes: sobe a API Cidades ESGInteligentes e o banco
+# Oracle em containers, para que os testes BDD sejam executados contra
+# a API como se ela estivesse em um servidor.
+#
+#   Subir só o ambiente (API + banco):
+#     docker compose up -d --wait
+#
+#   Subir o ambiente E rodar os testes dentro do Docker:
+#     docker compose --profile testes up --build --exit-code-from testes
+#
+# O banco é descartável: os testes criam os próprios dados a cada
+# execução, então não há volume e as senhas abaixo valem só para testes.
+# =====================================================================
+
+services:
+
+  # ------------------------------------------------------------ banco
+  db:
+    image: gvenzl/oracle-free:23-slim-faststart
+    container_name: esg-testes-db
+    environment:
+      ORACLE_PASSWORD: TesteAdmin123
+      APP_USER: esg_app
+      APP_USER_PASSWORD: TesteApp123
+    networks:
+      - esg-testes
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+
+  # ------------------------------------------------------------ API testada
+  # Imagem publicada no Docker Hub pelo pipeline do projeto da API (branch main).
+  api:
+    image: 1brel/esg-api:main
+    container_name: esg-testes-api
+    environment:
+      DATABASE_URL: jdbc:oracle:thin:@db:1521/FREEPDB1
+      DATABASE_USER: esg_app
+      DATABASE_PWD: TesteApp123
+      JWT_SECRET: chave-exclusiva-do-ambiente-de-testes
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - esg-testes
+    # A API está pronta quando responde qualquer status HTTP (403 sem token é o esperado).
+    healthcheck:
+      test: ["CMD-SHELL", "wget -S -O /dev/null http://localhost:8080/api/reducao-carbono 2>&1 | grep -q 'HTTP/'"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 40s
+
+  # ------------------------------------------------------------ testes (opcional)
+  # Só sobe com "--profile testes". Roda o Maven dentro de um container,
+  # então não é preciso ter Java nem Maven instalados.
+  testes:
+    build: .
+    container_name: esg-testes-runner
+    profiles: ["testes"]
+    environment:
+      BASE_URL: http://api:8080
+    depends_on:
+      api:
+        condition: service_healthy
+    volumes:
+      - ./target:/testes/target
+    networks:
+      - esg-testes
+
+networks:
+  esg-testes:
+    driver: bridge

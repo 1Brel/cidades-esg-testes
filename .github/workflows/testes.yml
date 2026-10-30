@@ -1,0 +1,53 @@
+name: Testes automatizados BDD
+
+# Quando o pipeline roda
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:          # botão "Run workflow" para rodar manualmente
+
+jobs:
+  testes-api:
+    name: Testes BDD da API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      # Sobe o Oracle e a API (imagem do Docker Hub) e espera os dois ficarem saudáveis
+      - name: Subir a API e o banco com Docker Compose
+        run: docker compose up -d --wait
+
+      - name: Configurar Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: maven
+
+      - name: Executar os testes (Cucumber + Rest Assured)
+        run: mvn -B clean test
+        env:
+          BASE_URL: http://127.0.0.1:8080
+
+      # Relatório HTML e JSON do Cucumber, disponíveis para download na execução
+      - name: Publicar relatório dos testes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: relatorio-cucumber
+          path: |
+            target/cucumber-reports.html
+            target/cucumber.json
+            target/surefire-reports/
+
+      - name: Logs da API (somente se algo falhar)
+        if: failure()
+        run: docker compose logs api
+
+      - name: Derrubar o ambiente
+        if: always()
+        run: docker compose down -v
